@@ -1,0 +1,23 @@
+{{define "accueil"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify API</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+{{template "header" }}
+<h1>Welcome to the Spotify API Demo</h1>
+<nav>
+
+    <ul>
+        <li><a href="/topalbums">Top Albums</a></li>
+        <li><a href="/toptracks">Top Tracks</a></li>
+        <li><a href="/topartists">Top Artists</a></li>
+    </ul>
+</nav>
+</body>
+</html>
+{{end}}

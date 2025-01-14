@@ -1,0 +1,27 @@
+
+{{define "header"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/header.css">
+</head>
+<header>
+    <img class="icon logo" src="/static/image/logo.svg">
+    <div class="center-block">
+        <button class="tranparentbutton" ><img class="icon" src="/static/image/accueil.svg"></button>
+    <form action="/" method="get">
+        <div class="search">
+            <button type="submit"><img class="icon" src="/static/image/recherche.svg"></button>
+            <label class="search-icon" for="search"></label>
+            <input class="search-input" id="search" type="search" name="search" placeholder="Que souhaitez vous écouter ?" >
+
+
+        </div>
+    </form>
+    </div>
+    <button class="tranparentbutton"><img class="icon" src="/static/image/parametres.svg"></button>
+</header>
+</html>
+{{end}}
