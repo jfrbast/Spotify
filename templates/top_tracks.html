@@ -1,27 +1,25 @@
 {{define "toptracks"}}
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
+
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Top Tracks</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-  </head>
-  <body>
-  <h1>Top Tracks</h1>
-  <ul>
-    {{range .Tracks.Items}}
-      <li>
-        <a href="{{.ExternalUrl}}">
-          <img src="{{.ImageUrl}}" alt="{{.Name}}" width="150">
-          <h2>{{.Name}}</h2>
-          <p>Album: {{.AlbumName}}</p>
-          <p>Release Date: {{.ReleaseDate}}</p>
-          <p>Artists: {{range .Artists}}{{.}} {{end}}</p>
-        </a>
-      </li>
-    {{end}}
-  </ul>
-  </body>
-  </html>
+    <link rel="stylesheet" href="/static/css/top_tracks.css">
+</head>
+<body>
+<div class="container">
+    <h1>Top Tracks</h1>
+    <div class="tracks">
+        {{range .}}
+        <div class="track">
+            <h2>{{.Name}}</h2>
+            <p>Artist: {{.Artists}}</p>
+            <p>Album: {{.AlbumName}}</p>
+        </div>
+        {{end}}
+    </div>
+</div>
+</body>
+</html>
 {{end}}

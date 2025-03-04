@@ -1,22 +1,28 @@
-{{define "inscription"}}
-<!DOCTYPE html>
+﻿{{define "inscription"}}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Inscription</title>
+    <link rel="stylesheet" href="/static/css/connexioninscription.css">
 </head>
 <body>
-<h1>Inscription</h1>
-<form action="/inscription" method="post">
-    <label for="username">Nom d'utilisateur</label>
-    <input type="text" id="username" name="username" required>
-    <label for="password">password</label>
-    <input type="password" id="password" name="password" required>
-    <label for="confirm password">Confirm password</label>
-    <input type="password" id="password2" name="password" required>
-    <input type="submit" value="S'inscrire">
-</form>
-    </body>
+<div class="container">
+    <h1>J'ai un compte SpotifyAPI</h1>
+    <hr>
+    {{if .}}
+    <p>{{.}}</p>
+    {{end}}
+    <form action="/inscription/treatment" method="post">
+        <label for="username">Nom d'utilisateur</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" required>
+        <label for="password2">Confirmer le mot de passe</label>
+        <input type="password" id="password2" name="password2" required>
+        <input type="submit" value="S'inscrire">
+    </form>
+        <a class="contain_a">Déjà un compte ?<a class="hyperlink" href="/connexion">Connectez-vous !</a></a>
+</body>
 </html>
-
-{{end}}
+{{end}} 

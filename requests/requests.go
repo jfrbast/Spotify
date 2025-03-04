@@ -55,6 +55,20 @@ type TrackItem struct {
 		Name string `json:"name"`
 	} `json:"artists"`
 }
+type SearchItem struct {
+	Items []struct {
+		Image []struct {
+			Url string `json:"url"`
+		} `json:"images"`
+		Name string `json:"name"`
+		Type string `json:"type"`
+	} `json:"items"`
+}
+type DataSearch struct {
+	Albums  SearchItem `json:"albums"`
+	Tracks  SearchItem `json:"tracks"`
+	Artists SearchItem `json:"artists"`
+}
 
 func RequestToken() error {
 	body := strings.NewReader(fmt.Sprintf("grant_type=client_credentials&client_id=%s&client_secret=%s", ClientId, ClientSecret))
@@ -78,7 +92,6 @@ func RequestToken() error {
 	}
 
 	var data DataToken
-
 	decodeErr := json.NewDecoder(res.Body).Decode(&data)
 	if decodeErr != nil {
 		return fmt.Errorf("RequestToken - Erreur lors du décodage des données")
@@ -162,4 +175,46 @@ func RequestTrack() (DataTracks, int, error) {
 	}
 
 	return data, res.StatusCode, nil
+}
+
+func RequestRecherche(Query string, Type string) (DataSearch, int, error) {
+	url := fmt.Sprintf("https://api.spotify.com/v1/search?q=%s&type=%s&limit=50", Query, Type)
+	url = strings.ReplaceAll(url, " ", "+")
+	req, reqErr := http.NewRequest(http.MethodGet, url, nil)
+	if reqErr != nil {
+		return DataSearch{}, 500, fmt.Errorf("Erreur lors de l'initialisation de la réquête")
+	}
+
+	req.Header.Set("Authorization", _token)
+
+	res, resErr := _httpClient.Do(req)
+	if resErr != nil {
+		return DataSearch{}, 500, fmt.Errorf("Erreur lors de l'envois de la réquête")
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode == 401 {
+		errToken := RequestToken()
+		if errToken != nil {
+			return DataSearch{}, 500, fmt.Errorf("Erreur lors de la récupération du token")
+		}
+		return RequestRecherche(Query, Type)
+	}
+	if res.StatusCode == 400 {
+		return DataSearch{}, res.StatusCode, fmt.Errorf("RequestTrack - Erreur dans la réponse de la requête code : %d", res.StatusCode)
+
+	}
+
+	if res.StatusCode != 200 {
+		return DataSearch{}, res.StatusCode, fmt.Errorf("RequestTrack code : %d", res.StatusCode)
+	}
+
+	var Datasearch DataSearch
+
+	decodeErr := json.NewDecoder(res.Body).Decode(&Datasearch)
+	if decodeErr != nil {
+		return DataSearch{}, 500, fmt.Errorf("RequestTrack - Erreur lors du décodage des données : %s", decodeErr.Error())
+	}
+
+	return Datasearch, res.StatusCode, nil
 }

@@ -1,23 +1,42 @@
 {{define "accueil"}}
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify API</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Accueil</title>
+    <link rel="stylesheet" href="/static/css/accueil.css">
 </head>
 <body>
-{{template "header" }}
-<h1>Welcome to the Spotify API Demo</h1>
-<nav>
-
-    <ul>
-        <li><a href="/topalbums">Top Albums</a></li>
-        <li><a href="/toptracks">Top Tracks</a></li>
-        <li><a href="/topartists">Top Artists</a></li>
-    </ul>
-</nav>
+{{template "header"}}
+<div class="main-container">
+    <aside class="sidebar">
+        <h2>Library</h2>
+        <ul>
+            <li><a href="/favorites">Favorites</a></li>
+            <li><a href="/playlists">Playlists</a></li>
+            <li><a href="/recent">Recently Played</a></li>
+        </ul>
+    </aside>
+    <main class="content">
+        <h1>Accueil</h1>
+        <div class="container">
+            <div class="card">
+                <h2>Top Artists</h2>
+                <a href="/topartists">Go to Top Artists</a>
+            </div>
+            <div class="card">
+                <h2>Top Tracks</h2>
+                <p>Discover the top tracks of the moment</p>
+                <a href="/toptracks">Go to Top Tracks</a>
+            </div>
+            <div class="card">
+                <h2>Top Albums</h2>
+                <p>Discover the top albums of the moment</p>
+                <a href="/topalbums">Go to Top Albums</a>
+            </div>
+        </div>
+    </main>
+</div>
 </body>
 </html>
 {{end}}

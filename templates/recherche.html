@@ -1,0 +1,19 @@
+{{define "recherche"}}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
+    <body>
+        {{if .IsEmpty}}
+            <p>ERROR</p>
+
+
+        {{else}}
+        {{.SearchItem}}
+
+        {{end}}
+
+</body>
+</html>
+{{end}}

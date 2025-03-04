@@ -1,0 +1,27 @@
+{{define "compte"}}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mon Compte</title>
+</head>
+<body>
+<form action="/compte/deconnexion" method="post">
+    <button type="submit">Déconnexion</button>
+</form>
+<h2>Vos Favoris</h2>
+<ul>
+    {{range .Favorites}}
+    <li>
+        {{.Name}} ({{.Type}})
+        <form action="/removefromfavorites" method="post" style="display:inline;">
+            <input type="hidden" name="username" value="{{$.Username}}">
+            <input type="hidden" name="favName" value="{{.Name}}">
+            <input type="hidden" name="favType" value="{{.Type}}">
+            <button type="submit">Retirer</button>
+        </form>
+    </li>
+    {{end}}
+</ul>
+</body>
+</html>
+{{end}}
