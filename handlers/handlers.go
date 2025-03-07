@@ -27,10 +27,14 @@ func TopAlbumsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func TopTracksHandler(w http.ResponseWriter, r *http.Request) {
+
 	tracks, statusCode, err := requests.RequestTrack()
 	if err != nil {
 		http.Error(w, "Failed to fetch top tracks", statusCode)
 		return
+	}
+	for index, element := range tracks.Tracks.Items {
+		tracks.Tracks.Items[index].ImageUrl = element.Album.Image[0].Url
 	}
 	templates.ExecuteTemplate(w, "toptracks", tracks)
 }
@@ -60,11 +64,10 @@ func AccueilHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func CompteHandler(w http.ResponseWriter, r *http.Request) {
-	if !utils.IsAuthenticated() {
-		http.Redirect(w, r, "/connexion", http.StatusSeeOther)
-		return
-	}
+	templates.ExecuteTemplate(w, "compte", nil)
+
 }
+
 func ConnexionHandler(w http.ResponseWriter, r *http.Request) {
 
 	templates.ExecuteTemplate(w, "connexion", nil)
@@ -76,7 +79,7 @@ func InscriptionHandler(w http.ResponseWriter, r *http.Request) {
 	templates.ExecuteTemplate(w, "inscription", value)
 }
 
-func DeconnexionHandler(w http.ResponseWriter, r *http.Request) {
+func DéconnexionHandler(w http.ResponseWriter, r *http.Request) {
 	utils.Deconnexion()
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 
@@ -134,7 +137,6 @@ func ConnexionTreatmentHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func InscritiontreatmentHandler(w http.ResponseWriter, r *http.Request) {
-
 	if r.FormValue("username") == "" || r.FormValue("password") == "" || r.FormValue("password2") == "" {
 		http.Redirect(w, r, "/inscription?erreur=Valeurs manquantes, fais un effort le boss.", http.StatusSeeOther)
 		return

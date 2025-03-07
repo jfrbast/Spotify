@@ -49,7 +49,12 @@ type TrackItem struct {
 	Name        string `json:"name"`
 	AlbumName   string `json:"album_name"`
 	ExternalUrl string `json:"external_url"`
-	ImageUrl    string `json:"image_url"`
+	Album       struct {
+		Image []struct {
+			Url string `json:"url"`
+		} `json:"images"`
+	} `json:"album"`
+	ImageUrl    string
 	ReleaseDate string `json:"release_date"`
 	Artists     []struct {
 		Name string `json:"name"`
@@ -92,6 +97,7 @@ func RequestToken() error {
 	}
 
 	var data DataToken
+
 	decodeErr := json.NewDecoder(res.Body).Decode(&data)
 	if decodeErr != nil {
 		return fmt.Errorf("RequestToken - Erreur lors du décodage des données")
@@ -173,13 +179,12 @@ func RequestTrack() (DataTracks, int, error) {
 	if decodeErr != nil {
 		return DataTracks{}, 500, fmt.Errorf("RequestTrack - Erreur lors du décodage des données : %s", decodeErr.Error())
 	}
-
 	return data, res.StatusCode, nil
 }
 
 func RequestRecherche(Query string, Type string) (DataSearch, int, error) {
-	url := fmt.Sprintf("https://api.spotify.com/v1/search?q=%s&type=%s&limit=50", Query, Type)
-	url = strings.ReplaceAll(url, " ", "+")
+	url := fmt.Sprintf("https://api.spotify.com/v1/search?q=%s&type=%s", Query, Type)
+
 	req, reqErr := http.NewRequest(http.MethodGet, url, nil)
 	if reqErr != nil {
 		return DataSearch{}, 500, fmt.Errorf("Erreur lors de l'initialisation de la réquête")
@@ -200,13 +205,9 @@ func RequestRecherche(Query string, Type string) (DataSearch, int, error) {
 		}
 		return RequestRecherche(Query, Type)
 	}
-	if res.StatusCode == 400 {
-		return DataSearch{}, res.StatusCode, fmt.Errorf("RequestTrack - Erreur dans la réponse de la requête code : %d", res.StatusCode)
-
-	}
 
 	if res.StatusCode != 200 {
-		return DataSearch{}, res.StatusCode, fmt.Errorf("RequestTrack code : %d", res.StatusCode)
+		return DataSearch{}, res.StatusCode, fmt.Errorf("RequestTrack - Erreur dans la réponse de la requête code : %d", res.StatusCode)
 	}
 
 	var Datasearch DataSearch

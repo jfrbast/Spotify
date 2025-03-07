@@ -1,6 +1,4 @@
-
 {{define "header"}}
-
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -8,10 +6,10 @@
     <link rel="stylesheet" href="/static/css/header.css">
 </head>
 <header>
-    <a href="/accueil"><img class="icon logo" src="/static/image/logo.svg"></a>
+    <img class="icon logo" src="/static/image/logo.svg">
     <div class="center-block">
 
-        <a href="/accueil"> <button class="tranparentbutton" ><img class="icon" src="/static/image/accueil.svg"></button></a>
+        <button class="tranparentbutton" ><img class="icon" src="/static/image/accueil.svg"></button>
 
         <form action="/recherche" method="get">
             <div class="search">
@@ -30,5 +28,6 @@
 
    <a href="/compte"><button class="tranparentbutton"><img class="icon" src="/static/image/profile.svg"></button></a>
 </header>
+</body>
 </html>
 {{end}}
