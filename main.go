@@ -1,19 +1,13 @@
 package main
 
 import (
-	"spotify/handlers"
-	temp "spotify/templates"
-	"spotify/utils"
-
 	"log"
 	"net/http"
+	"spotify/handlers"
+	temp "spotify/templates"
 )
 
 func main() {
-	// Charger les utilisateurs au démarrage
-	if err := utils.LoadUsers(); err != nil {
-		log.Fatal("Erreur de chargement des utilisateurs:", err)
-	}
 
 	temp.InitTemplates()
 
