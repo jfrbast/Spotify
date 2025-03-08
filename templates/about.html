@@ -1,0 +1,93 @@
+{{define "about"}}
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>À propos - Spotify API</title>
+    <link rel="stylesheet" href="/static/css/about.css">
+</head>
+<body>
+
+
+<div>
+  <h2>À propos du projet</h2>
+  <p>SpotifyAPI est une application web développée en Go qui utilise l'API Spotify pour permettre aux utilisateurs de découvrir de nouvelles musiques, de rechercher des artistes et des albums, et de gérer leurs favoris. c'est un peu guez pas hyper fier de celui là il sera pas sur le portfolio.</p>
+
+  <h2>FAQ sur la gestion du projet</h2>
+
+  <div>
+    <div><strong>Comment avons-nous décomposé le projet ?</strong></div>
+    <div>
+      <p>Nous avons structuré notre projet en plusieurs phases clés pour assurer une progression cohérente :</p>
+      <ul>
+        <li><strong>Phase d'analyse et de conception</strong> : Nous avons commencé par définir les fonctionnalités principales, l'architecture de l'application et les interactions avec l'API Spotify.</li>
+        <li><strong>Phase de développement backend</strong> : Cette étape comprenait la mise en place de la connexion à l'API Spotify, la création de notre propre API, et la gestion des utilisateurs.</li>
+        <li><strong>Phase de développement frontend</strong> : Nous avons conçu et implémenté les templates HTML pour offrir une expérience utilisateur intuitive et agréable.</li>
+        <li><strong>Phase de tests</strong> : Nous avons effectué des tests approfondis pour garantir la robustesse de l'application, notamment en ce qui concerne la gestion des erreurs d'API.</li>
+        <li><strong>Phase de déploiement</strong> : La dernière étape a consisté à déployer l'application sur un serveur et à finaliser la documentation.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div>
+    <div><strong>Comment avons-nous réparti les tâches entre les membres de l'équipe ?</strong></div>
+    <div>
+      <p>Nous avons adopté une répartition des tâches basée sur les compétences et les intérêts de chaque membre :</p>
+      <div><strong>Bastien</strong> : Spécialiste de l'intégration avec l'API Spotify, responsable de la mise en place des requêtes et du traitement des réponses.</div>
+      <div><strong>Moi</strong> : Expert en backend Go, chargé de l'architecture du serveur, des routes et de la gestion des sessions.</div>
+      <div><strong>Jouffre</strong> : Designer UI/UX, responsable des templates et de l'expérience utilisateur globale.</div>
+      <div><strong>Bounty</strong> : Gestionnaire de base de données et responsable des tests, assurant la persistance des données et la qualité du code.</div>
+      <p>Nous avons implémenté une méthode de travail inspirée de l'Agile, avec des réunions hebdomadaires (standups) et un tableau Kanban pour suivre l'avancement des tâches.</p>
+    </div>
+  </div>
+
+  <div>
+    <div><strong>Comment avons-nous géré notre temps ?</strong></div>
+    <div>
+      <p>La gestion du temps a été un aspect crucial de notre projet :</p>
+      <ul>
+        <li>Nous avons défini des <strong>priorités claires</strong> en utilisant la méthode MoSCoW (Must have, Should have, Could have, Won't have) pour identifier les fonctionnalités essentielles.</li>
+        <li>Nous avons établi un <strong>calendrier détaillé</strong> avec des jalons intermédiaires pour mesurer notre progression.</li>
+        <li>Nous avons mis en place des <strong>sprints de deux semaines</strong> avec des objectifs spécifiques pour chaque période.</li>
+        <li>Nous avons intégré des <strong>marges de sécurité</strong> pour faire face aux imprévus, notamment les difficultés avec l'API Spotify.</li>
+        <li>Nous avons utilisé <strong>Trello</strong> pour visualiser l'avancement et identifier rapidement les blocages potentiels.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div>
+    <div><strong>Quelle stratégie avons-nous adoptée pour nous documenter ?</strong></div>
+    <div>
+      <p>Notre approche de documentation a été multifacette :</p>
+      <ul>
+        <li><strong>Documentation officielle</strong> : Consultation approfondie de la documentation de l'API Spotify et des meilleures pratiques Go.</li>
+        <li><strong>Communauté en ligne</strong> : Participation active à des forums comme Stack Overflow et Reddit pour résoudre des problèmes spécifiques.</li>
+        <li><strong>Tutoriels et exemples</strong> : Analyse de projets similaires et de tutoriels pour comprendre les approches efficaces.</li>
+        <li><strong>Documentation interne</strong> : Création d'une documentation technique pour le projet, incluant les choix d'architecture et les spécifications d'API.</li>
+        <li><strong>Sessions de pair programming</strong> : Organisation régulière de sessions pour partager les connaissances et résoudre collectivement les problèmes complexes.</li>
+      </ul>
+      <p>Cette stratégie nous a permis de surmonter efficacement les obstacles techniques et de maintenir une cohérence dans notre approche de développement.</p>
+    </div>
+  </div>
+  <div>
+  <h2>Fonctionnalités principales</h2>
+  <ul>
+    <li>Découverte aléatoire de titres musicaux</li>
+    <li>Système d'authentification (inscription et connexion)</li>
+    <li>Gestion de favoris</li>
+    <li>Recherche de titres, artistes et albums</li>
+    <li>Affichage détaillé des informations sur les titres</li>
+  </ul>
+
+  <h2>Technologies utilisées</h2>
+  <ul>
+    <li>Go (langage de programmation backend)</li>
+    <li>API Spotify (source de données musicales)</li>
+    <li>HTML (interface utilisateur)</li>
+    <li>SQL (base de données)</li>
+  </ul>
+</div>
+</div>
+</body>
+</html>
+{{end}}

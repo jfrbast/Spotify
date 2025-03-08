@@ -3,38 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil</title>
+    <title>Random - Discover</title>
     <link rel="stylesheet" href="/static/css/accueil.css">
 </head>
 <body>
 {{template "header"}}
 <div class="main-container">
-    <aside class="sidebar">
-        <h2>Library</h2>
-        <ul>
-            <li><a href="/favorites">Favorites</a></li>
-            <li><a href="/playlists">Playlists</a></li>
-            <li><a href="/recent">Recently Played</a></li>
-        </ul>
-    </aside>
     <main class="content">
-        <h1>Accueil</h1>
+        <h1>Discover Random Things</h1>
         <div class="container">
-            <div class="card">
-                <h2>Top Artists</h2>
-                <a href="/topartists">Go to Top Artists</a>
-            </div>
-            <div class="card">
-                <h2>Top Tracks</h2>
-                <p>Discover the top tracks of the moment</p>
-                <a href="/toptracks">Go to Top Tracks</a>
-            </div>
-            <div class="card">
-                <h2>Top Albums</h2>
-                <p>Discover the top albums of the moment</p>
-                <a href="/topalbums">Go to Top Albums</a>
-            </div>
+            <h2>Explore New Random Content</h2>
+            <p>Click the button below to explore random items, surprises, and more!</p>
+            <a href="/random" class="cta-button">Go to Random</a>
         </div>
+
+
     </main>
 </div>
 </body>

@@ -14,7 +14,6 @@ type Fav struct {
 var CurrentUser User
 
 func CreateUser(name string, password string) (User, error) {
-
 	res, err := os.ReadFile("comptes.json")
 	if err != nil {
 		fmt.Println(err)
@@ -44,8 +43,8 @@ func CreateUser(name string, password string) (User, error) {
 	err = os.WriteFile("comptes.json", dataEncode, 0644)
 	if err != nil {
 		fmt.Println(err)
-
 	}
+
 	return newUser, nil
 }
 
@@ -82,6 +81,7 @@ func Connexion(username string, password string) (bool, error) {
 	}
 	return false, fmt.Errorf("Connexion - nom d'utilisateur non trouvé")
 }
+
 func Deconnexion() {
 	CurrentUser = User{}
 }
@@ -102,4 +102,126 @@ type User struct {
 	Name     string    `json:"name"`
 	Password string    `json:"password"`
 	Favoris  []Favoris `json:"favoris"`
+}
+
+func AddToFavorites(itemName string) bool {
+	res, err := os.ReadFile("comptes.json")
+	if err != nil {
+		fmt.Println("Erreur de lecture du fichier:", err)
+		return false
+	}
+
+	var liste []User
+	err = json.Unmarshal(res, &liste)
+	if err != nil {
+		fmt.Println("Erreur de décodage du fichier:", err)
+		return false
+	}
+
+	for i, user := range liste {
+		if user.Name == CurrentUser.Name {
+			liste[i].Favoris = append(liste[i].Favoris, Favoris{Name: itemName, Type: "unknown"})
+			CurrentUser.Favoris = liste[i].Favoris
+			break
+		}
+	}
+
+	dataEncode, err := json.Marshal(liste)
+	if err != nil {
+		fmt.Println("Erreur d'encodage des données:", err)
+		return false
+	}
+
+	err = os.WriteFile("comptes.json", dataEncode, 0644)
+	if err != nil {
+		fmt.Println("Erreur d'écriture du fichier:", err)
+		return false
+	}
+
+	return true
+}
+
+func GetFavorites() ([]Favoris, error) {
+	res, err := os.ReadFile("comptes.json")
+	if err != nil {
+		return nil, fmt.Errorf("Erreur de lecture du fichier: %s", err.Error())
+	}
+
+	var liste []User
+	err = json.Unmarshal(res, &liste)
+	if err != nil {
+		return nil, fmt.Errorf("Erreur de décodage du fichier: %s", err.Error())
+	}
+
+	for _, user := range liste {
+		if user.Name == CurrentUser.Name {
+			return user.Favoris, nil
+		}
+	}
+
+	return nil, fmt.Errorf("Utilisateur non trouvé")
+}
+
+func SearchFavorite(itemName string) (Favoris, error) {
+	res, err := os.ReadFile("comptes.json")
+	if err != nil {
+		return Favoris{}, fmt.Errorf("Erreur de lecture du fichier: %s", err.Error())
+	}
+
+	var liste []User
+	err = json.Unmarshal(res, &liste)
+	if err != nil {
+		return Favoris{}, fmt.Errorf("Erreur de décodage du fichier: %s", err.Error())
+	}
+
+	for _, user := range liste {
+		if user.Name == CurrentUser.Name {
+			for _, favori := range user.Favoris {
+				if favori.Name == itemName {
+					return favori, nil
+				}
+			}
+			break
+		}
+	}
+
+	return Favoris{}, fmt.Errorf("Favori non trouvé")
+}
+
+func RemoveFavorite(itemName string) error {
+	res, err := os.ReadFile("comptes.json")
+	if err != nil {
+		return fmt.Errorf("Erreur de lecture du fichier: %s", err.Error())
+	}
+
+	var liste []User
+	err = json.Unmarshal(res, &liste)
+	if err != nil {
+		return fmt.Errorf("Erreur de décodage du fichier: %s", err.Error())
+	}
+
+	for i, user := range liste {
+		if user.Name == CurrentUser.Name {
+			for j, favori := range user.Favoris {
+				if favori.Name == itemName {
+					liste[i].Favoris = append(user.Favoris[:j], user.Favoris[j+1:]...)
+					CurrentUser.Favoris = liste[i].Favoris
+					break
+				}
+			}
+			break
+		}
+	}
+
+	dataEncode, err := json.Marshal(liste)
+	if err != nil {
+		return fmt.Errorf("Erreur d'encodage des données: %s", err.Error())
+	}
+
+	err = os.WriteFile("comptes.json", dataEncode, 0644)
+	if err != nil {
+		return fmt.Errorf("Erreur d'écriture du fichier: %s", err.Error())
+	}
+
+	return nil
 }

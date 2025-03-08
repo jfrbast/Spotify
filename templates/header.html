@@ -5,28 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/header.css">
 </head>
+<body>
 <header>
-    <img class="icon logo" src="/static/image/logo.svg">
+    <a href="/about"><img class="logo" src="/static/image/logo.svg"></a>
     <div class="center-block">
-
-        <button class="tranparentbutton" ><img class="icon" src="/static/image/accueil.svg"></button>
-
+        <button class="tranparentbutton"><img class="icon" src="/static/image/accueil.svg"></button>
         <form action="/recherche" method="get">
             <div class="search">
                 <button type="submit"><img class="icon" src="/static/image/recherche.svg"></button>
                 <label class="search-icon" for="search"></label>
                 <input class="search-input" id="search" type="search" name="query" placeholder="Que souhaitez vous écouter ?" required>
-                <select name="type" id="type" required>
-                    <option value="track">Titre</option>
-                    <option value="album">Album</option>
-                    <option value="artist">Artiste</option>
+                <select class="search-select" name="type">
+                <option value="track">Titre</option>
+                <option value="album">Album</option>
+                <option value="artist">Artiste</option>
                 </select>
             </div>
         </form>
-
     </div>
-
-   <a href="/compte"><button class="tranparentbutton"><img class="icon" src="/static/image/profile.svg"></button></a>
+    <div class="right-block">
+        <a href="/compte/deconnexion" class="logout-button"><button class="tranparentbutton"><img class="icon" src="/static/image/logout.svg"></button></a>
+        <a href="/compte"><button class="tranparentbutton"><img class="icon" src="/static/image/profile.svg"></button></a>
+    </div>
 </header>
 </body>
 </html>

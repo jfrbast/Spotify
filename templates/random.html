@@ -1,0 +1,32 @@
+{{define "random"}}
+
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="/static/css/random.css">
+  </head>
+  <body>
+  {{template "header"}}
+  <h1>Top Tracks</h1>
+  <ul>
+    {{range .Tracks.Items}}
+    <a href="/detail?id={{.Id}}">
+        <li>
+
+          <img src="{{.ImageUrl}}" alt="{{.Name}}" width="150">
+          <h2>{{.Name}}</h2>
+          <p>Artists: {{range .Artists}}{{.}} {{end}}</p>
+         <a href="/random/treatment?id={{.Id}}" ><button type="submit" name="id" class="Bbutton"><img class="favorite-image" src="/static/image/coeur.svg"></button></a>
+          <a href="/random/remove?id={{.Id}}" ><button type="submit" name="id" class="Bbutton"><img class="favorite-image" src="/static/image/co-eur.svg"> </button></a>
+
+
+        </li>
+    </a>
+
+    {{end}}
+  </ul>
+  </body>
+  </html>
+{{end}}

@@ -1,0 +1,29 @@
+{{define "detail"}}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="/static/css/random.css">
+</head>
+<body>
+{{template "header"}}
+<h1>Top Tracks</h1>
+<ul>
+    {{range .Tracks.Items}}
+    <a>
+        <li>
+
+            <img src="{{.ImageUrl}}" alt="{{.Name}}" class="favorite-image">
+            <div class="favorite-info">
+                <span class="favorite-name">{{.Name}}</span>
+                <span class="favorite-artists">{{range .Artists}}{{.Name}}{{end}}</span>
+        </li>
+    </a>
+
+    {{end}}
+</ul>
+</body>
+</html>
+{{end}}

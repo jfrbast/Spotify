@@ -3,6 +3,7 @@ package requests
 import (
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"strings"
 	"time"
@@ -22,23 +23,6 @@ type DataToken struct {
 	TokenType   string `json:"token_type"`
 }
 
-type DataAlbums struct {
-	Albums struct {
-		Items []AlbumItem `json:"items"`
-	} `json:"albums"`
-}
-
-type AlbumItem struct {
-	TotalTracks int    `json:"total_tracks"`
-	ExternalUrl string `json:"external_url"`
-	ImageUrl    string `json:"image_url"`
-	Name        string `json:"name"`
-	ReleaseDate string `json:"release_date"`
-	Artists     []struct {
-		Name string `json:"name"`
-	} `json:"artists"`
-}
-
 type DataTracks struct {
 	Tracks struct {
 		Items []TrackItem `json:"items"`
@@ -46,6 +30,7 @@ type DataTracks struct {
 }
 
 type TrackItem struct {
+	Id          string `json:"id"`
 	Name        string `json:"name"`
 	AlbumName   string `json:"album_name"`
 	ExternalUrl string `json:"external_url"`
@@ -61,13 +46,20 @@ type TrackItem struct {
 	} `json:"artists"`
 }
 type SearchItem struct {
-	Items []struct {
+	Id          string `json:"id"`
+	Name        string `json:"name"`
+	AlbumName   string `json:"album_name"`
+	ExternalUrl string `json:"external_url"`
+	Album       struct {
 		Image []struct {
 			Url string `json:"url"`
 		} `json:"images"`
+	} `json:"album"`
+	ImageUrl    string
+	ReleaseDate string `json:"release_date"`
+	Artists     []struct {
 		Name string `json:"name"`
-		Type string `json:"type"`
-	} `json:"items"`
+	} `json:"artists"`
 }
 type DataSearch struct {
 	Albums  SearchItem `json:"albums"`
@@ -107,46 +99,29 @@ func RequestToken() error {
 	return nil
 }
 
-func RequestAlbums() (DataAlbums, int, error) {
-	url := "https://api.spotify.com/v1/search?q=top+albums&type=album&market=FR&limit=50"
-	req, reqErr := http.NewRequest(http.MethodGet, url, nil)
-	if reqErr != nil {
-		return DataAlbums{}, 500, fmt.Errorf("Erreur lors de l'initialisation de la réquête")
+func RequestRandom() (DataTracks, int, error) {
+
+	musique := []string{
+		"Michael+Jackson", "Beyoncé", "Rihanna", "Eminem", "Tupac+Shakur", "Drake",
+		"The+Beatles", "Queen", "Nirvana", "The+Rolling+Stones", "Metallica",
+		"Daft+Punk", "David+Guetta", "Skrillex", "The+Weeknd", "Calvin+Harris",
+		"Whitney+Houston", "Alicia+Keys", "Usher", "Stromae", "Mylène+Farmer",
+		"Angèle", "Edith+Piaf", "Jacques+Brel", "Johnny+Hallyday", "Madonna",
+		"Bob+Marley", "Elvis+Presley", "Travis+Scott", "BTS", "Kanye+West",
+		"AC/DC", "The+Ramones", "Marvin+Gaye", "Johnny+Cash", "Carl+Cox",
+		"Pink+Floyd", "Lana+Del+Rey", "Frank+Ocean", "Céline+Dion", "Bruno+Mars",
+		"Coldplay", "Imagine+Dragons", "Post+Malone", "Doja+Cat",
+		"Pop", "Rock", "Rap/Hip-Hop", "R&B", "Électro/House", "Jazz", "Blues",
+		"Reggae", "Funk", "Soul", "Métal", "Punk", "Chanson+française", "K-pop",
+		"Musique+classique", "Country", "Trap", "Techno", "Hard+Rock", "Disco",
+		"Grunge", "Dubstep", "Dancehall", "Afrobeat", "Indie+Rock",
 	}
 
-	req.Header.Set("Authorization", _token)
+	rand.Shuffle(len(musique), func(i, j int) { musique[i], musique[j] = musique[j], musique[i] })
 
-	res, resErr := _httpClient.Do(req)
-	if resErr != nil {
-		return DataAlbums{}, 500, fmt.Errorf("Erreur lors de l'envois de la réquête")
-	}
-
-	defer res.Body.Close()
-
-	if res.StatusCode == 401 {
-		errToken := RequestToken()
-		if errToken != nil {
-			return DataAlbums{}, 500, fmt.Errorf("Erreur lors de la récupération du token")
-		}
-		return RequestAlbums()
-	}
-
-	if res.StatusCode != 200 {
-		return DataAlbums{}, res.StatusCode, fmt.Errorf("RequestAlbums - Erreur dans la réponse de la requête code : %d", res.StatusCode)
-	}
-
-	var albums DataAlbums
-
-	decodeErr := json.NewDecoder(res.Body).Decode(&albums)
-	if decodeErr != nil {
-		return DataAlbums{}, 500, fmt.Errorf("RequestAlbums - Erreur lors du décodage des données : %s", decodeErr.Error())
-	}
-
-	return albums, res.StatusCode, nil
-}
-
-func RequestTrack() (DataTracks, int, error) {
-	url := "https://api.spotify.com/v1/search?q=top+tracks&type=track&market=FR&limit=50"
+	randomIndex := rand.Intn(len(musique))
+	Query := musique[randomIndex]
+	url := fmt.Sprintf("https://api.spotify.com/v1/search?q=%s&type=track&market=FR&limit=50", Query)
 	req, reqErr := http.NewRequest(http.MethodGet, url, nil)
 	if reqErr != nil {
 		return DataTracks{}, 500, fmt.Errorf("Erreur lors de l'initialisation de la réquête")
@@ -166,7 +141,7 @@ func RequestTrack() (DataTracks, int, error) {
 		if errToken != nil {
 			return DataTracks{}, 500, fmt.Errorf("Erreur lors de la récupération du token")
 		}
-		return RequestTrack()
+		return RequestRandom()
 	}
 
 	if res.StatusCode != 200 {
@@ -218,4 +193,55 @@ func RequestRecherche(Query string, Type string) (DataSearch, int, error) {
 	}
 
 	return Datasearch, res.StatusCode, nil
+}
+
+type Track struct {
+	Id    string `json:"id"`
+	Name  string `json:"name"`
+	Album struct {
+		Image []struct {
+			Url string `json:"url"`
+		} `json:"images"`
+	} `json:"album"`
+	ImageUrl    string
+	ReleaseDate string `json:"release_date"`
+	Artists     []struct {
+		Name string `json:"name"`
+	} `json:"artists"`
+}
+
+func RequestTrackByID(id string) (Track, int, error) {
+	url := fmt.Sprintf("https://api.spotify.com/v1/tracks/%s", id)
+	req, reqErr := http.NewRequest(http.MethodGet, url, nil)
+	if reqErr != nil {
+		return Track{}, 500, fmt.Errorf("Erreur lors de l'initialisation de la réquête")
+	}
+
+	req.Header.Set("Authorization", _token)
+
+	res, resErr := _httpClient.Do(req)
+	if resErr != nil {
+		return Track{}, 500, fmt.Errorf("Erreur lors de l'envois de la réquête")
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode == 401 {
+		errToken := RequestToken()
+		if errToken != nil {
+			return Track{}, 500, fmt.Errorf("Erreur lors de la récupération du token")
+		}
+		return RequestTrackByID(id)
+	}
+
+	if res.StatusCode != 200 {
+		return Track{}, res.StatusCode, fmt.Errorf("RequestTrackByID - Erreur dans la réponse de la requête code : %d", res.StatusCode)
+	}
+
+	var track Track
+	decodeErr := json.NewDecoder(res.Body).Decode(&track)
+	if decodeErr != nil {
+		return Track{}, 500, fmt.Errorf("RequestTrackByID - Erreur lors du décodage des données : %s", decodeErr.Error())
+	}
+
+	return track, res.StatusCode, nil
 }

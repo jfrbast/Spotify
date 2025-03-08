@@ -1,27 +1,34 @@
 {{define "compte"}}
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Mon Compte</title>
+    <title>Compte</title>
+    <link rel="stylesheet" href="/static/css/compte.css">
 </head>
 <body>
-<form action="/compte/deconnexion" method="post">
-    <button type="submit">Déconnexion</button>
-</form>
-<h2>Vos Favoris</h2>
-<ul>
-    {{range .Favorites}}
-    <li>
-        {{.Name}} ({{.Type}})
-        <form action="/removefromfavorites" method="post" style="display:inline;">
-            <input type="hidden" name="username" value="{{$.Username}}">
-            <input type="hidden" name="favName" value="{{.Name}}">
-            <input type="hidden" name="favType" value="{{.Type}}">
-            <button type="submit">Retirer</button>
-        </form>
-    </li>
-    {{end}}
-</ul>
+{{template "header"}}
+<main>
+    <h1>Welcome, {{.User.Name}}</h1>
+    <section class="favorites">
+        <h2>Your Favorites</h2>
+        <ul>
+            {{range .Favorites}}
+            <li class="favorite-item">
+                <img src="{{.ImageUrl}}" alt="{{.Name}}" class="favorite-image">
+                <div class="favorite-info">
+                    <span class="favorite-name">{{.Name}}</span>
+                    <span class="favorite-artists">{{range .Artists}}{{.Name}}{{end}}</span>
+                    <a href="/compte/removefavorite?id={{.Id}}">
+                        <button type="submit" name="id">
+                            <img class="favorite-image" src="/static/image/co-eur.svg">
+                        </button>
+                    </a>
+                </div>
+            </li>
+            {{end}}
+        </ul>
+    </section>
+</main>
 </body>
 </html>
 {{end}}

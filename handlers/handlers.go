@@ -14,44 +14,68 @@ var (
 	Type      string
 )
 
-func TopAlbumsHandler(w http.ResponseWriter, r *http.Request) {
+func RandomHandler(w http.ResponseWriter, r *http.Request) {
 
-	albums, statusCode, err := requests.RequestAlbums()
+	tracks, statusCode, err := requests.RequestRandom()
 	if err != nil {
-		fmt.Println(err)
-		http.Error(w, "Failed to fetch top albums", statusCode)
-		return
-	}
-
-	templates.ExecuteTemplate(w, "topalbums", albums)
-}
-
-func TopTracksHandler(w http.ResponseWriter, r *http.Request) {
-
-	tracks, statusCode, err := requests.RequestTrack()
-	if err != nil {
-		http.Error(w, "Failed to fetch top tracks", statusCode)
+		http.Error(w, "Failed to fetch random", statusCode)
 		return
 	}
 	for index, element := range tracks.Tracks.Items {
 		tracks.Tracks.Items[index].ImageUrl = element.Album.Image[0].Url
 	}
-	templates.ExecuteTemplate(w, "toptracks", tracks)
+
+	templates.ExecuteTemplate(w, "random", tracks)
 }
+func DetailHandler(w http.ResponseWriter, r *http.Request) {
+	ID := r.FormValue("id")
 
-/*
-func topArtistsHandler(w http.ResponseWriter, r *http.Request) {
-
-
-	tracks, statusCode, err := requests.Request()
+	track, statusCode, err := requests.RequestTrackByID(ID)
 	if err != nil {
-		http.Error(w, "Failed to fetch top tracks", statusCode)
+		fmt.Println("Failed to fetch track details:", err)
+		http.Error(w, "Failed to fetch track details", statusCode)
 		return
 	}
 
-	templates.ExecuteTemplate(w, "topartists", tracks)
+	templates.ExecuteTemplate(w, "detail", track)
 }
-*/
+func RandomTreatmentHandler(w http.ResponseWriter, r *http.Request) {
+	ID := r.FormValue("id")
+	fmt.Println(ID)
+
+	if !utils.IsAuthenticated() {
+		http.Redirect(w, r, "/connexion", http.StatusSeeOther)
+		return
+	}
+
+	if !utils.AddToFavorites(ID) {
+		http.Error(w, "Failed to add to favorites", http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/random", http.StatusSeeOther)
+}
+
+func RemoveFavoriteHandler(w http.ResponseWriter, r *http.Request) {
+	if !utils.IsAuthenticated() {
+		http.Redirect(w, r, "/connexion", http.StatusSeeOther)
+		return
+	}
+
+	trackID := r.URL.Query().Get("id")
+	if trackID == "" {
+		http.Error(w, "Missing track ID", http.StatusBadRequest)
+		return
+	}
+
+	err := utils.RemoveFavorite(trackID)
+	if err != nil {
+		http.Error(w, "Failed to remove favorite", http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/random", http.StatusSeeOther)
+}
 
 func HeaderHandler(w http.ResponseWriter, r *http.Request) {
 	templates.ExecuteTemplate(w, "header", nil)
@@ -62,10 +86,45 @@ func AccueilHandler(w http.ResponseWriter, r *http.Request) {
 	templates.ExecuteTemplate(w, "accueil", nil)
 
 }
+func AboutHandler(w http.ResponseWriter, r *http.Request) {
+	templates.ExecuteTemplate(w, "about", nil)
+
+}
 
 func CompteHandler(w http.ResponseWriter, r *http.Request) {
-	templates.ExecuteTemplate(w, "compte", nil)
+	if !utils.IsAuthenticated() {
+		http.Redirect(w, r, "/connexion", http.StatusSeeOther)
+		return
+	}
 
+	favorites, err := utils.GetFavorites()
+	if err != nil {
+		http.Error(w, "Failed to get favorites", http.StatusInternalServerError)
+		return
+	}
+
+	var detailedFavorites []requests.Track
+	for _, fav := range favorites {
+		track, statusCode, err := requests.RequestTrackByID(fav.Name)
+		if err != nil {
+			fmt.Println("Failed to fetch track details:", err)
+			http.Error(w, "Failed to fetch track details", statusCode)
+			return
+		}
+		detailedFavorites = append(detailedFavorites, track)
+	}
+
+	data := struct {
+		User      utils.User
+		Favorites []requests.Track
+	}{
+		User:      utils.CurrentUser,
+		Favorites: detailedFavorites,
+	}
+	for index, element := range data.Favorites {
+		data.Favorites[index].ImageUrl = element.Album.Image[0].Url
+	}
+	templates.ExecuteTemplate(w, "compte", data)
 }
 
 func ConnexionHandler(w http.ResponseWriter, r *http.Request) {
@@ -79,7 +138,7 @@ func InscriptionHandler(w http.ResponseWriter, r *http.Request) {
 	templates.ExecuteTemplate(w, "inscription", value)
 }
 
-func DéconnexionHandler(w http.ResponseWriter, r *http.Request) {
+func DeconnexionHandler(w http.ResponseWriter, r *http.Request) {
 	utils.Deconnexion()
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 
@@ -112,7 +171,6 @@ func Recherche(w http.ResponseWriter, r *http.Request) {
 			data.SearchItem = searchData.Artists
 		}
 	}
-
 	templates.ExecuteTemplate(w, "recherche", data)
 
 }
@@ -153,4 +211,25 @@ func InscritiontreatmentHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/connexion", http.StatusSeeOther)
 	}
 
+}
+
+func CompteRemoveFavoriteHandler(w http.ResponseWriter, r *http.Request) {
+	if !utils.IsAuthenticated() {
+		http.Redirect(w, r, "/connexion", http.StatusSeeOther)
+		return
+	}
+
+	trackID := r.URL.Query().Get("id")
+	if trackID == "" {
+		http.Error(w, "Missing track ID", http.StatusBadRequest)
+		return
+	}
+
+	err := utils.RemoveFavorite(trackID)
+	if err != nil {
+		http.Error(w, "Failed to remove favorite", http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/compte", http.StatusSeeOther)
 }

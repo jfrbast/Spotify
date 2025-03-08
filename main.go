@@ -15,17 +15,22 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
 	// Routes existantes
-	http.HandleFunc("/topalbums", handlers.TopAlbumsHandler)
-	http.HandleFunc("/toptracks", handlers.TopTracksHandler)
+
+	http.HandleFunc("/random", handlers.RandomHandler)
+	http.HandleFunc("/random/treatment", handlers.RandomTreatmentHandler)
 	http.HandleFunc("/header", handlers.HeaderHandler)
+	http.HandleFunc("/detail", handlers.DetailHandler)
+	http.HandleFunc("/compte/removefavorite", handlers.CompteRemoveFavoriteHandler)
 	//http.HandleFunc("/track/details", handlers.TrackDetailsHandler)
 	http.HandleFunc("/recherche", handlers.Recherche)
 	http.HandleFunc("/compte", handlers.CompteHandler)
-	//http.HandleFunc("/compte/deconnexion", handlers.DeconnexionHandler)
+	http.HandleFunc("/random/remove", handlers.RemoveFavoriteHandler)
+	http.HandleFunc("/compte/deconnexion", handlers.DeconnexionHandler)
 	http.HandleFunc("/inscription", handlers.InscriptionHandler)
 	http.HandleFunc("/inscription/treatment", handlers.InscritiontreatmentHandler)
 	http.HandleFunc("/connexion", handlers.ConnexionHandler)
 	http.HandleFunc("/connexion/treatment", handlers.ConnexionTreatmentHandler)
+	http.HandleFunc("/about", handlers.AboutHandler)
 	http.HandleFunc("/", handlers.AccueilHandler)
 
 	log.Println("Server started on :8080")
