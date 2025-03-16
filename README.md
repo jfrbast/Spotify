@@ -79,12 +79,11 @@ Nous avons décomposé le projet en plusieurs phases clés :
 4. **Phase de tests** : Vérification du bon fonctionnement de l'application
 5. **Phase de déploiement** : Préparation et mise en ligne de l'application
 
-### Répartition des tâches
-Nous avons réparti les tâches en fonction des compétences de chaque membre :
-- **Membre 1** : API Spotify et intégration
-- **Membre 2** : Système d'authentification et gestion des utilisateurs
-- **Membre 3** : Interface utilisateur et templates
-- **Membre 4** : Tests et documentation
+
+ API Spotify et intégration
+ Système d'authentification et gestion des utilisateurs
+Interface utilisateur et templates
+ Tests et documentation
 
 Nous avons utilisé une approche Agile avec des sprints de deux semaines et des réunions hebdomadaires pour suivre l'avancement du projet.
 

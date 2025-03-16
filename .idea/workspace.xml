@@ -5,29 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2e412b2a-83ca-4fc5-b801-b2a5b0e36303" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/static/css/Likes.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/image/notfound.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/rechercheA.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/rechercheAL.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/rechercheT.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/comptes.json" beforeDir="false" afterPath="$PROJECT_DIR$/comptes.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/handlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/handlers.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requests/requests.go" beforeDir="false" afterPath="$PROJECT_DIR$/requests/requests.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/header.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/header.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/random.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/random.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/recherche.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/recherche.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/compte.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/compte.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/connexion.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/connexion.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/inscription.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/inscription.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/random.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/random.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/recherche.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/templates.go" beforeDir="false" afterPath="$PROJECT_DIR$/templates/templates.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/comptes.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/comptes.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
