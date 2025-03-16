@@ -1,20 +1,14 @@
 {{define "header"}}
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/header.css">
-</head>
-<body>
 <header>
-    <a href="/about"><img class="logo" src="/static/image/logo.svg"></a>
+    <a href="/"><img class="logo" src="/static/image/logo.svg"></a>
     <div class="center-block">
-        <button class="tranparentbutton"><img class="icon" src="/static/image/accueil.svg"></button>
+        <a href="/"><button class="tranparentbutton buttonh"><img class="icon" src="/static/image/accueil.svg"></button></a>
+
         <form action="/recherche" method="get">
             <div class="search">
-                <button type="submit"><img class="icon" src="/static/image/recherche.svg"></button>
+                <button type="submit" class="tranparentbutton "><img class="icon" src="/static/image/recherche.svg"></button>
                 <label class="search-icon" for="search"></label>
-                <input class="search-input" id="search" type="search" name="query" placeholder="Que souhaitez vous écouter ?" required>
+                <input class="search-input" id="search" type="search" name="query" placeholder="What would you like to hear?" required>
                 <select class="search-select" name="type">
                 <option value="track">Titre</option>
                 <option value="album">Album</option>
@@ -28,6 +22,4 @@
         <a href="/compte"><button class="tranparentbutton"><img class="icon" src="/static/image/profile.svg"></button></a>
     </div>
 </header>
-</body>
-</html>
 {{end}}

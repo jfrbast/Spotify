@@ -45,26 +45,65 @@ type TrackItem struct {
 		Name string `json:"name"`
 	} `json:"artists"`
 }
-type SearchItem struct {
-	Id          string `json:"id"`
-	Name        string `json:"name"`
-	AlbumName   string `json:"album_name"`
-	ExternalUrl string `json:"external_url"`
-	Album       struct {
-		Image []struct {
+
+type SearchItemAL struct {
+	Items []struct {
+		Id          string `json:"id"`
+		Name        string `json:"name"`
+		Release     string `json:"release_date"`
+		TotalTracks int    `json:"total_tracks"`
+		AlbumType   string `json:"album_type"`
+
+		Images []struct {
 			Url string `json:"url"`
 		} `json:"images"`
-	} `json:"album"`
-	ImageUrl    string
-	ReleaseDate string `json:"release_date"`
-	Artists     []struct {
-		Name string `json:"name"`
-	} `json:"artists"`
+
+		Artists []struct {
+			Name string `json:"name"`
+		} `json:"artists"`
+
+		ImageUrl string `json:"-"` // Stocke l'URL manuellement après parsing
+	} `json:"items"`
+}
+
+// ArtistItem représente un artiste dans la recherche Spotify
+type SearchItemA struct {
+	Items []struct {
+		Id         string   `json:"id"`
+		Name       string   `json:"name"`
+		Genres     []string `json:"genres"`
+		Popularity int      `json:"popularity"`
+		Followers  struct {
+			Total int `json:"total"`
+		} `json:"followers"`
+
+		Images []struct {
+			Url string `json:"url"`
+		} `json:"images"`
+
+		ImageUrl string `json:"-"` // Stocke l'URL de l'image manuellement après parsing
+	} `json:"items"`
+}
+type SearchItemT struct {
+	Items []struct {
+		Id    string `json:"id"`
+		Name  string `json:"name"`
+		Album struct {
+			Image []struct {
+				Url string `json:"url"`
+			} `json:"images"`
+		} `json:"album"`
+		ImageUrl string
+
+		Artists []struct {
+			Name string `json:"name"`
+		} `json:"artists"`
+	} `json:"items"`
 }
 type DataSearch struct {
-	Albums  SearchItem `json:"albums"`
-	Tracks  SearchItem `json:"tracks"`
-	Artists SearchItem `json:"artists"`
+	Albums  SearchItemAL `json:"albums"`
+	Tracks  SearchItemT  `json:"tracks"`
+	Artists SearchItemA  `json:"artists"`
 }
 
 func RequestToken() error {
@@ -99,7 +138,7 @@ func RequestToken() error {
 	return nil
 }
 
-func RequestRandom() (DataTracks, int, error) {
+func RequestRandom(offset int) (DataTracks, int, error) {
 
 	musique := []string{
 		"Michael+Jackson", "Beyoncé", "Rihanna", "Eminem", "Tupac+Shakur", "Drake",
@@ -121,17 +160,19 @@ func RequestRandom() (DataTracks, int, error) {
 
 	randomIndex := rand.Intn(len(musique))
 	Query := musique[randomIndex]
-	url := fmt.Sprintf("https://api.spotify.com/v1/search?q=%s&type=track&market=FR&limit=50", Query)
+
+	url := fmt.Sprintf("https://api.spotify.com/v1/search?q=%s&type=track&market=FR&limit=10&offset=%d", Query, offset)
+
 	req, reqErr := http.NewRequest(http.MethodGet, url, nil)
 	if reqErr != nil {
-		return DataTracks{}, 500, fmt.Errorf("Erreur lors de l'initialisation de la réquête")
+		return DataTracks{}, 500, fmt.Errorf("Erreur lors de l'initialisation de la requête")
 	}
 
 	req.Header.Set("Authorization", _token)
 
 	res, resErr := _httpClient.Do(req)
 	if resErr != nil {
-		return DataTracks{}, 500, fmt.Errorf("Erreur lors de l'envois de la réquête")
+		return DataTracks{}, 500, fmt.Errorf("Erreur lors de l'envoi de la requête")
 	}
 
 	defer res.Body.Close()
@@ -141,23 +182,29 @@ func RequestRandom() (DataTracks, int, error) {
 		if errToken != nil {
 			return DataTracks{}, 500, fmt.Errorf("Erreur lors de la récupération du token")
 		}
-		return RequestRandom()
+		return RequestRandom(offset)
 	}
 
 	if res.StatusCode != 200 {
-		return DataTracks{}, res.StatusCode, fmt.Errorf("RequestTrack - Erreur dans la réponse de la requête code : %d", res.StatusCode)
+		return DataTracks{}, res.StatusCode, fmt.Errorf("Erreur API Spotify code : %d", res.StatusCode)
 	}
 
 	var data DataTracks
-
 	decodeErr := json.NewDecoder(res.Body).Decode(&data)
 	if decodeErr != nil {
-		return DataTracks{}, 500, fmt.Errorf("RequestTrack - Erreur lors du décodage des données : %s", decodeErr.Error())
+		return DataTracks{}, 500, fmt.Errorf("Erreur lors du décodage des données : %s", decodeErr.Error())
 	}
+
 	return data, res.StatusCode, nil
 }
 
 func RequestRecherche(Query string, Type string) (DataSearch, int, error) {
+	for i := 0; i < len(Query); i++ {
+		if Query[i] == ' ' {
+			Query = strings.ReplaceAll(Query, " ", "+")
+		}
+	}
+	fmt.Println(Query)
 	url := fmt.Sprintf("https://api.spotify.com/v1/search?q=%s&type=%s", Query, Type)
 
 	req, reqErr := http.NewRequest(http.MethodGet, url, nil)
@@ -210,8 +257,8 @@ type Track struct {
 	} `json:"artists"`
 }
 
-func RequestTrackByID(id string) (Track, int, error) {
-	url := fmt.Sprintf("https://api.spotify.com/v1/tracks/%s", id)
+func RequestTrackByID(id string, Type string) (Track, int, error) {
+	url := fmt.Sprintf("https://api.spotify.com/v1/%s/%s", Type, id)
 	req, reqErr := http.NewRequest(http.MethodGet, url, nil)
 	if reqErr != nil {
 		return Track{}, 500, fmt.Errorf("Erreur lors de l'initialisation de la réquête")
@@ -230,7 +277,7 @@ func RequestTrackByID(id string) (Track, int, error) {
 		if errToken != nil {
 			return Track{}, 500, fmt.Errorf("Erreur lors de la récupération du token")
 		}
-		return RequestTrackByID(id)
+		return RequestTrackByID(id, Type)
 	}
 
 	if res.StatusCode != 200 {

@@ -3,26 +3,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Inscription</title>
+    <title>Sign In</title>
     <link rel="stylesheet" href="/static/css/connexioninscription.css">
 </head>
 <body>
 <div class="container">
-    <h1>J'ai un compte SpotifyAPI</h1>
+    <h1>I Have SpotifyAPI</h1>
     <hr>
     {{if .}}
     <p>{{.}}</p>
     {{end}}
     <form action="/inscription/treatment" method="post">
-        <label for="username">Nom d'utilisateur</label>
-        <input type="text" id="username" name="username" required placeholder="Nom d'utilisateur">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required placeholder="Username">
         <label for="password">Mot de passe</label>
-        <input type="password" id="password" name="password" required placeholder="Mot de passe">
+        <input type="password" id="password" name="password" required placeholder="Password">
         <label for="password2">Confirmer le mot de passe</label>
-        <input type="password" id="password2" name="password2" required placeholder="Confirmer le mot de passe">
-        <input type="submit" value="S'inscrire">
+        <input type="password" id="password2" name="password2" required placeholder="Confirm Password">
+        <input type="submit" value="Sign In">
     </form>
-        <a class="contain_a">Déjà un compte ?<a class="hyperlink" href="/connexion">Connectez-vous !</a></a>
+        <a class="contain_a">Already have account ?<a class="hyperlink" href="/connexion">Log In !</a></a>
 </body>
 </html>
 {{end}} 

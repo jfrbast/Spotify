@@ -1,0 +1,49 @@
+{{define "rechercheA"}}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recherche - Artists</title>
+    <link rel="stylesheet" href="/static/css/header.css">
+    <link rel="stylesheet" href="/static/css/recherche.css">
+    <link rel="stylesheet" href="/static/css/Likes.css">
+
+</head>
+<body>
+{{template "header"}}
+<main>
+    <h1>Search Results - Artists</h1>
+    {{if .IsEmpty}}
+    <p>No results found.</p>
+    {{else}}
+    <ul class="search-results">
+        {{range .SearchItemA.Items}}
+        <li class="search-item">
+
+                {{if .Images}}
+                <img src="{{(index .Images 0).Url}}" alt="{{.Name}}" width="150">
+                {{else}}
+                <img src="/static/image/notfound.jpg" alt="{{.Name}}" width="150">
+                {{end}}
+                <h2>{{.Name}}</h2>
+                <p>Genres: {{range .Genres}}{{.}} {{end}}</p>
+                <p>Followers: {{.Followers.Total}}</p>
+
+
+            <a href="/random/treatment?id={{.Id}}&type=artists">
+                <button type="submit" name="id" class="like-button">
+                    <img class="favorite-image" src="/static/image/coeur.svg">
+                </button>
+            </a>
+            <a href="/random/remove?id={{.Id}}">
+                <button type="submit" name="id" class="like-button">
+                    <img class="favorite-image" src="/static/image/co-eur.svg">
+                </button>
+            </a>
+        </li>
+        {{end}}
+    </ul>
+    {{end}}
+</main>
+</body>
+</html>
+{{end}}

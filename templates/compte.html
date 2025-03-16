@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Compte</title>
+    <title>Account</title>
+    <link rel="stylesheet" href="/static/css/header.css">
     <link rel="stylesheet" href="/static/css/compte.css">
+    <link rel="stylesheet" href="/static/css/Likes.css">
 </head>
 <body>
 {{template "header"}}
@@ -19,7 +21,7 @@
                     <span class="favorite-name">{{.Name}}</span>
                     <span class="favorite-artists">{{range .Artists}}{{.Name}}{{end}}</span>
                     <a href="/compte/removefavorite?id={{.Id}}">
-                        <button type="submit" name="id">
+                        <button type="submit" name="id" class = "like-button">
                             <img class="favorite-image" src="/static/image/co-eur.svg">
                         </button>
                     </a>

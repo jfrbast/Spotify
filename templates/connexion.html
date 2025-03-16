@@ -3,21 +3,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Inscription</title>
+  <title>Log In</title>
   <link rel="stylesheet" href="/static/css/connexioninscription.css">
 </head>
 <body>
 <div class="container">
-  <h1>CONNEXION</h1>
+  <h1>Log In</h1>
   <hr>
   <form action="/connexion/treatment" method="post">
-    <label for="username">Nom d'utilisateur</label>
-    <input type="text" id="username" name="username" required placeholder="Nom d'utilisateur">
-    <label for="password">Mot de passe</label>
-    <input type="password" id="password" name="password" required placeholder="Mot de passe">
-    <input type="submit" value="Se connecter">
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username" required placeholder="Username">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required placeholder="Password">
+    <input type="submit" value="Log In">
     </form>
-  <a class="contain_a">Pas de compte ?<a class="hyperlink" href="/inscription">Creez-en un !</a></a>
+  <a class="contain_a">No account ?<a class="hyperlink" href="/inscription">Sign In !</a></a>
  </body>
 </html>
 {{end}} 

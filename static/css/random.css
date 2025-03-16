@@ -66,3 +66,41 @@ button:hover {
     background: none;
 
 }
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    text-decoration: none;
+    color: #1db954;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination a:hover {
+    background-color: #1db954;
+    color: #fff;
+}
+
+.pagination span {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    margin: 0 5px;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+a {
+    text-decoration: none;
+}
+
+a{
+    text-decoration: none;
+}

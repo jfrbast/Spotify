@@ -1,32 +1,55 @@
 {{define "random"}}
 
-  <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <link rel="stylesheet" href="/static/css/random.css">
-  </head>
-  <body>
-  {{template "header"}}
-  <h1>Top Tracks</h1>
-  <ul>
-    {{range .Tracks.Items}}
-    <a href="/detail?id={{.Id}}">
-        <li>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Tracks</title>
+  <link rel="stylesheet" href="/static/css/header.css">
+  <link rel="stylesheet" href="/static/css/random.css">
 
-          <img src="{{.ImageUrl}}" alt="{{.Name}}" width="150">
-          <h2>{{.Name}}</h2>
-          <p>Artists: {{range .Artists}}{{.}} {{end}}</p>
-         <a href="/random/treatment?id={{.Id}}" ><button type="submit" name="id" class="Bbutton"><img class="favorite-image" src="/static/image/coeur.svg"></button></a>
-          <a href="/random/remove?id={{.Id}}" ><button type="submit" name="id" class="Bbutton"><img class="favorite-image" src="/static/image/co-eur.svg"> </button></a>
-
-
-        </li>
+  <link rel="stylesheet" href="/static/css/Likes.css">
+</head>
+<body>
+{{template "header"}}
+<h1>Top Tracks</h1>
+<ul>
+  {{range .Tracks}}
+  <li>
+    <a href="/detail?id={{.Id}}&type=tracks">
+      {{if .Album.Image}}
+      <img src="{{(index .Album.Image 0).Url}}" alt="{{.Name}}" width="150">
+      {{else}}
+      <img src="/static/image/notfound.jpg" alt="{{.Name}}" width="150">
+      {{end}}
+      <h2>{{.Name}}</h2>
+      <p>Artists: {{range .Artists}}{{.Name}} {{end}}</p>
     </a>
 
-    {{end}}
-  </ul>
-  </body>
-  </html>
+
+    <a href="/random/treatment?id={{.Id}}&type = tracks">
+      <button type="submit" name="id" class="like-button">
+        <img class="favorite-image" src="/static/image/coeur.svg">
+      </button>
+    </a>
+    <a href="/random/remove?id={{.Id}}">
+      <button type="submit" name="id" class="like-button">
+        <img class="favorite-image" src="/static/image/co-eur.svg">
+      </button>
+    </a>
+  </li>
+  {{end}}
+</ul>
+
+
+<div class="pagination">
+  {{if gt .Offset 0}}
+  <a href="/random?offset={{.PrevOffset}}" class="prev-button">⬅ Précédent</a>
+  {{end}}
+  <a href="/random?offset={{.NextOffset}}" class="next-button">Suivant ➡</a>
+</div>
+
+</body>
+</html>
+
 {{end}}

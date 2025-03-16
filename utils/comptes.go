@@ -104,7 +104,7 @@ type User struct {
 	Favoris  []Favoris `json:"favoris"`
 }
 
-func AddToFavorites(itemName string) bool {
+func AddToFavorites(itemName string, Type string) bool {
 	res, err := os.ReadFile("comptes.json")
 	if err != nil {
 		fmt.Println("Erreur de lecture du fichier:", err)
@@ -120,7 +120,7 @@ func AddToFavorites(itemName string) bool {
 
 	for i, user := range liste {
 		if user.Name == CurrentUser.Name {
-			liste[i].Favoris = append(liste[i].Favoris, Favoris{Name: itemName, Type: "unknown"})
+			liste[i].Favoris = append(liste[i].Favoris, Favoris{Name: itemName, Type: Type})
 			CurrentUser.Favoris = liste[i].Favoris
 			break
 		}
